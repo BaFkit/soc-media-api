@@ -2,12 +2,12 @@ package com.example.socialmediaapi.entities;
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
-import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
@@ -21,7 +21,7 @@ import java.util.UUID;
 public class Post {
 
     @Id
-    @GenericGenerator(name = "UUIDGenerator")
+    @GenericGenerator(name = "UUIDGenerator", strategy = "uuid2")
     @GeneratedValue(generator = "UUIDGenerator")
     @JsonSerialize(using = UUIDSerializer.class)
     @Column(name = "id")
@@ -32,6 +32,9 @@ public class Post {
 
     @Column(name = "text")
     private String text;
+
+    @Column(name = "image")
+    private byte[] image;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
