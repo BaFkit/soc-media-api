@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -53,9 +54,9 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-//    private User findUserById(UUID id) {
-//        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-//    }
+    public User findUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
     @Transactional
     public void createUser(SignupRequest userIn) {
