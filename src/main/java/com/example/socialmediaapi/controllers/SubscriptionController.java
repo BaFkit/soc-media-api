@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/subscription")
+@RequestMapping("/api/v1/subscriptions")
 public class SubscriptionController {
 
     private final SubscriptionService subscriptionService;
@@ -24,5 +24,13 @@ public class SubscriptionController {
         subscriptionService.acceptFriendship(id, principal.getName());
     }
 
+    @DeleteMapping("/{id}")
+    public void unsubscribeRequest(@PathVariable UUID id, Principal principal) {
+        subscriptionService.unsubscribe(id, principal.getName());
+    }
 
+    @DeleteMapping("/friends/{id}")
+    public void unfriendRequest(@PathVariable UUID id, Principal principal) {
+        subscriptionService.unfriend(id, principal.getName());
+    }
 }

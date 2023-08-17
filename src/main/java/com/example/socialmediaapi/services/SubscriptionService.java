@@ -3,6 +3,8 @@ package com.example.socialmediaapi.services;
 import com.example.socialmediaapi.entities.Subscription;
 import com.example.socialmediaapi.entities.User;
 import com.example.socialmediaapi.exceptions.AccessDeniedException;
+import com.example.socialmediaapi.exceptions.ResourceNotFoundException;
+import com.example.socialmediaapi.exceptions.UnacceptableException;
 import com.example.socialmediaapi.repositories.SubscriptionRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -41,11 +43,31 @@ public class SubscriptionService {
 
     private void creatingFriendship(UUID firstUserId, UUID secondUserId) {
         try {
-            subscriptionRepository.findByFollower_Id(firstUserId).setFriends(true);
-            subscriptionRepository.findByFollower_Id(secondUserId).setFriends(true);
+            findSubscription(firstUserId, secondUserId).setFriends(true);
+            findSubscription(firstUserId, secondUserId).setFriends(true);
         } catch (Exception e) {
-            log.error("Error creating friendship");
+            log.error("Error creating friendship: " + e.getMessage());
         }
-
     }
+
+    private Subscription findSubscription(UUID followerId, UUID subscriptionTargetId) {
+        return subscriptionRepository.findByFollower_IdAndSubscriptionTarget_Id(followerId, subscriptionTargetId).orElseThrow(() -> new ResourceNotFoundException("No subscription"));
+    }
+
+    @Transactional
+    public void unsubscribe(UUID targetId, String initiatorUsername) {
+        Subscription subscription = findSubscription(userService.findUserByUsername(initiatorUsername).getId(), targetId);
+        if (subscription.isFriends()) throw new UnacceptableException("Can't unfollow a friend");
+        subscriptionRepository.delete(subscription);
+    }
+
+    @Transactional
+    public void unfriend(UUID targetId, String initiatorUsername) {
+        User initiatorUser = userService.findUserByUsername(initiatorUsername);
+        Subscription subscription = findSubscription(initiatorUser.getId(), targetId);
+        if (!subscription.isFriends()) throw new ResourceNotFoundException("This user is not a friend");
+        subscriptionRepository.delete(subscription);
+        findSubscription(targetId, initiatorUser.getId()).setFriends(false);
+    }
+
 }

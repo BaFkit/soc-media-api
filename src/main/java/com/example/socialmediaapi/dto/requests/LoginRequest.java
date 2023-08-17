@@ -1,4 +1,4 @@
-package com.example.socialmediaapi.dto;
+package com.example.socialmediaapi.dto.requests;
 
 import lombok.Data;
 

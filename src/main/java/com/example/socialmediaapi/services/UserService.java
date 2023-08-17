@@ -1,6 +1,6 @@
 package com.example.socialmediaapi.services;
 
-import com.example.socialmediaapi.dto.SignupRequest;
+import com.example.socialmediaapi.dto.requests.SignupRequest;
 import com.example.socialmediaapi.entities.Role;
 import com.example.socialmediaapi.entities.User;
 import com.example.socialmediaapi.exceptions.ResourceExistsException;
@@ -33,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = login.contains("@") ? findUserByEmail(login) : findUserByUsername(login);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));

@@ -43,4 +43,13 @@ create table if not exists subscriptions
     subscription_target uuid    not null references users (id),
     is_friends          boolean not null,
     created_at          timestamp default current_timestamp
+);
+
+create table if not exists messages
+(
+    id         bigserial primary key,
+    text       text,
+    sender     uuid not null references users (id),
+    addressee  uuid not null references users (id),
+    created_at timestamp default current_timestamp
 )

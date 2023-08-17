@@ -1,4 +1,4 @@
-package com.example.socialmediaapi.dto;
+package com.example.socialmediaapi.dto.responces;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
