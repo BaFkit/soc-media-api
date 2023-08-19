@@ -8,6 +8,8 @@ import com.example.socialmediaapi.exceptions.AuthenticationException;
 import com.example.socialmediaapi.security.JwtTokenProvider;
 import com.example.socialmediaapi.validators.LoginValidator;
 import com.example.socialmediaapi.validators.SignupValidator;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -22,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/auth")
+@Tag(name = "Auth", description = "Controller for authorization and registration")
 public class AuthController {
 
     private final UserService userService;
@@ -31,6 +34,7 @@ public class AuthController {
     private final SignupValidator signupValidator;
 
     @PostMapping
+    @Operation(summary = "Authorization request",description = "Login can be made by login or email")
     public LoginResponse authenticateUser(@RequestBody LoginRequest loginRequest) {
         loginValidator.validate(loginRequest);
         try {
@@ -45,6 +49,7 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
+    @Operation(summary = "Registration request",description = "Sending user data for registration")
     public void registerUser(@RequestBody SignupRequest signupRequest) {
         signupValidator.validate(signupRequest);
         userService.createUser(signupRequest);

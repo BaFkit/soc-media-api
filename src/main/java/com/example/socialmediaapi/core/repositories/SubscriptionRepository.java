@@ -10,7 +10,7 @@ import java.util.UUID;
 @Repository
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
 
-    Optional<Subscription> findByFollower_IdAndSubscriptionTarget_Id(UUID followerId, UUID subscriptionTargetId);
-    boolean existsByFollower_IdAndSubscriptionTarget_Id(UUID followerId, UUID subscriptionTargetId);
+    Optional<Subscription> findByFollowerIdAndSubscriptionTargetId(UUID followerId, UUID subscriptionTargetId);
+    boolean existsByFollowerIdAndSubscriptionTargetId(UUID followerId, UUID subscriptionTargetId);
 
 }

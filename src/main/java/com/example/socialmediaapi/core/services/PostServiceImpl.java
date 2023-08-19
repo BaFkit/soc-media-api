@@ -64,7 +64,7 @@ public class PostServiceImpl implements PostService {
     @Override
     @Transactional(readOnly = true)
     public Page<PostDtoOut> findSubscriberPosts(Integer page, Integer quantity, Boolean newFirst, String username) {
-        Pageable pageable = Boolean.TRUE.equals((newFirst)) ? PageRequest.of(page - 1, quantity, Sort.by("updatedAt").descending()) : PageRequest.of(page - 1, 10, Sort.by("updatedAt"));
+        Pageable pageable = Boolean.TRUE.equals((newFirst)) ? PageRequest.of(page - 1, quantity, Sort.by("updatedAt").descending()) : PageRequest.of(page - 1, quantity, Sort.by("updatedAt"));
         return postRepository.findSubscriberPosts(pageable, userService.findUserByUsername(username).getId())
                 .map(postOutConverter::entityToDto);
     }

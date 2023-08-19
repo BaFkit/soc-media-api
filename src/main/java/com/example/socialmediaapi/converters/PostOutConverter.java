@@ -17,7 +17,7 @@ public class PostOutConverter {
         postDtoOut.setTitle(post.getTitle());
         postDtoOut.setText(post.getText());
         postDtoOut.setPublisherUsername(post.getUser().getUsername());
-        postDtoOut.setImage(imageService.decompressBytes(post.getImage()));
+        if (post.getImage() != null) postDtoOut.setImage(imageService.decompressBytes(post.getImage()));
         return postDtoOut;
     }
 

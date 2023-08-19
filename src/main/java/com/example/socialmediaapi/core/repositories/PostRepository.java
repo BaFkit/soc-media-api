@@ -15,7 +15,6 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
 
     List<Post> findAllByUserId(UUID userId);
 
-    @Query(value = "select p from Post p, Subscription s where p.user.id = s.subscriptionTarget and s.follower =:userId")
+    @Query(value = "select p from Post p, Subscription s where p.user.id = s.subscriptionTarget and s.follower.id=:userId")
     Page<Post> findSubscriberPosts(Pageable page, UUID userId);
-
 }

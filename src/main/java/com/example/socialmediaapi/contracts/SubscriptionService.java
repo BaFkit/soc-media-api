@@ -8,5 +8,6 @@ public interface SubscriptionService {
     void acceptFriendship(UUID targetId, String acceptingUsername);
     void unsubscribe(UUID targetId, String initiatorUsername);
     void unfriend(UUID targetId, String initiatorUsername);
+    boolean checkFriendship(UUID firstUserId, UUID secondUserId);
 
 }

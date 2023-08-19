@@ -40,15 +40,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     public void acceptFriendship(UUID targetId, String acceptingUsername) {
         User acceptingUser = userService.findUserByUsername(acceptingUsername);
         if (!checkSubscription(targetId, acceptingUser.getId())) throw new AccessDeniedException("No friend request");
-        subscribe(targetId, acceptingUsername);
+        if (!checkSubscription(acceptingUser.getId(), targetId)) subscribe(targetId, acceptingUsername);
         creatingFriendship(targetId, acceptingUser.getId());
     }
 
     private boolean checkSubscription(UUID followerId, UUID subscriptionTargetId) {
-       return subscriptionRepository.existsByFollower_IdAndSubscriptionTarget_Id(followerId, subscriptionTargetId);
+       return subscriptionRepository.existsByFollowerIdAndSubscriptionTargetId(followerId, subscriptionTargetId);
     }
 
-    private boolean checkFriendship(UUID firstUserId, UUID secondUserId) {
+    @Override
+    public boolean checkFriendship(UUID firstUserId, UUID secondUserId) {
         return findSubscription(firstUserId, secondUserId).isFriends();
     }
 
@@ -56,14 +57,14 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         if (checkFriendship(firstUserId, secondUserId)) throw new ResourceExistsException("Already have a friendship");
         try {
             findSubscription(firstUserId, secondUserId).setFriends(true);
-            findSubscription(firstUserId, secondUserId).setFriends(true);
+            findSubscription(secondUserId, firstUserId).setFriends(true);
         } catch (Exception e) {
             log.error("Error creating friendship: " + e.getMessage());
         }
     }
 
     private Subscription findSubscription(UUID followerId, UUID subscriptionTargetId) {
-        return subscriptionRepository.findByFollower_IdAndSubscriptionTarget_Id(followerId, subscriptionTargetId).orElseThrow(() -> new ResourceNotFoundException("No subscription"));
+        return subscriptionRepository.findByFollowerIdAndSubscriptionTargetId(followerId, subscriptionTargetId).orElseThrow(() -> new ResourceNotFoundException("No subscription"));
     }
 
     @Override
