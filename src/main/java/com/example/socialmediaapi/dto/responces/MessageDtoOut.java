@@ -8,8 +8,8 @@ import java.time.LocalDateTime;
 public class MessageDtoOut {
 
     private String text;
-    private String sender;
-    private String addressee;
-    private LocalDateTime dateTime;
+    private String senderUsername;
+    private String addresseeUsername;
+    private LocalDateTime createdAt;
 
 }
