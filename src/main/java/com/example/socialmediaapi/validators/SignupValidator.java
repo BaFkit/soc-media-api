@@ -1,6 +1,6 @@
 package com.example.socialmediaapi.validators;
 
-import com.example.socialmediaapi.dto.SignupRequest;
+import com.example.socialmediaapi.dto.requests.SignupRequest;
 import com.example.socialmediaapi.exceptions.ValidationException;
 import org.springframework.stereotype.Component;
 

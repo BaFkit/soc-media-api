@@ -33,9 +33,9 @@ public class PostService {
             post = findPostById(postDto.getId());
         }
         post.setTitle(postDto.getTitle());
-        post.setText(post.getText());
+        post.setText(postDto.getText());
         try {
-            post.setImage(imageService.compressBytes(file.getBytes()));
+            if(file != null) post.setImage(imageService.compressBytes(file.getBytes()));
         } catch (IOException e) {
             log.error("error adding image");
         }

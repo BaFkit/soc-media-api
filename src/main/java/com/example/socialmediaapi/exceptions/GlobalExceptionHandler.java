@@ -35,6 +35,12 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<AppError> unacceptableException(UnacceptableException e) {
+        log.error(e.getMessage(), e);
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_ACCEPTABLE.value(), e.getMessage()), HttpStatus.NOT_ACCEPTABLE);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<FieldsValidationError> catchValidationException(ValidationException e) {
         log.error(e.getMessage(), e);
         return new ResponseEntity<>(new FieldsValidationError(e.getErrorFieldsMessages()), HttpStatus.BAD_REQUEST);

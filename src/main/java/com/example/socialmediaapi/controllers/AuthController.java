@@ -1,8 +1,8 @@
 package com.example.socialmediaapi.controllers;
 
-import com.example.socialmediaapi.dto.LoginRequest;
-import com.example.socialmediaapi.dto.LoginResponse;
-import com.example.socialmediaapi.dto.SignupRequest;
+import com.example.socialmediaapi.dto.requests.LoginRequest;
+import com.example.socialmediaapi.dto.responces.LoginResponse;
+import com.example.socialmediaapi.dto.requests.SignupRequest;
 import com.example.socialmediaapi.exceptions.AuthenticationException;
 import com.example.socialmediaapi.security.JwtTokenProvider;
 import com.example.socialmediaapi.services.UserService;

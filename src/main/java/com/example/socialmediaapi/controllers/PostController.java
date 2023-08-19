@@ -11,13 +11,13 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/vi/posts")
+@RequestMapping("/api/v1/posts")
 public class PostController {
 
     private final PostService postService;
 
     @PostMapping
-    public void createPost(@RequestParam(name = "file") MultipartFile file, @RequestBody PostDto postDto, Principal principal) {
+    public void createPost(@RequestParam(name = "file", required = false) MultipartFile file, @RequestBody PostDto postDto, Principal principal) {
         postService.createOrUpdatePost(file, postDto, principal.getName());
     }
 

@@ -1,6 +1,6 @@
 package com.example.socialmediaapi.services;
 
-import com.example.socialmediaapi.dto.SignupRequest;
+import com.example.socialmediaapi.dto.requests.SignupRequest;
 import com.example.socialmediaapi.entities.Role;
 import com.example.socialmediaapi.entities.User;
 import com.example.socialmediaapi.exceptions.ResourceExistsException;
@@ -20,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +33,7 @@ public class UserService implements UserDetailsService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     @Override
+    @Transactional(readOnly = true)
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
         User user = login.contains("@") ? findUserByEmail(login) : findUserByUsername(login);
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), mapRolesToAuthorities(user.getRoles()));
@@ -53,9 +55,9 @@ public class UserService implements UserDetailsService {
         return user;
     }
 
-//    private User findUserById(UUID id) {
-//        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-//    }
+    public User findUserById(UUID id) {
+        return userRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("User not found"));
+    }
 
     @Transactional
     public void createUser(SignupRequest userIn) {
