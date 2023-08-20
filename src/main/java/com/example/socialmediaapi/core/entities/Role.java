@@ -40,7 +40,7 @@ public class Role {
         if (this == o) return true;
         if (!(o instanceof Role)) return false;
         Role role = (Role) o;
-        return Objects.equals(id, role.id);
+        return id.equals(role.id);
     }
 
     @Override
