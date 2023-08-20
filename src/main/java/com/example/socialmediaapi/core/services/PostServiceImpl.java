@@ -10,6 +10,7 @@ import com.example.socialmediaapi.exceptions.AccessDeniedException;
 import com.example.socialmediaapi.exceptions.ResourceNotFoundException;
 import com.example.socialmediaapi.converters.mappers.EntityDtoMapper;
 import com.example.socialmediaapi.core.repositories.PostRepository;
+import com.example.socialmediaapi.validators.PostValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -34,10 +35,12 @@ public class PostServiceImpl implements PostService {
     private final ImageServiceImpl imageService;
     private final UserService userService;
     private final PostOutConverter postOutConverter;
+    private final PostValidator postValidator;
 
     @Override
     @Transactional
     public void createOrUpdatePost(MultipartFile file, PostDtoIn postDtoIn, String username) {
+        postValidator.validate(postDtoIn);
         Post post = new Post();
         if (postDtoIn.getId() != null) {
             post = findPostById(postDtoIn.getId());
