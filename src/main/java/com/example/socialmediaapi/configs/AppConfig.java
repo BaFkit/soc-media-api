@@ -6,7 +6,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
-@PropertySource("secrets.properties")
+@PropertySource("classpath:/secrets.properties")
 public class AppConfig {
 
     @Bean
